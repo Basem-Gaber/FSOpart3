@@ -6,6 +6,8 @@ const cors = require('cors')
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(express.static('build'))
+
 
 morgan.token('my_post', function (req, res) {
   //console.log("here with")
@@ -47,7 +49,7 @@ app.get('/', function(req, res){
   res.redirect('/api');
 });
 */
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
