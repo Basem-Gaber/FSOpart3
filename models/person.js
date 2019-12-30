@@ -34,6 +34,7 @@ const personSchema = new mongoose.Schema({
   }
 })
 personSchema.plugin(uniqueValidator)
+
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

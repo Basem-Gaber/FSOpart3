@@ -14,9 +14,9 @@ app.use(bodyParser.json())
 app.use(express.static('build'))
 
 
+// eslint-disable-next-line no-unused-vars
 morgan.token('my_post', function (req, res) {
   //console.log("here with")
-  const body = req.body
   //console.log(JSON.stringify(body))
   if (req.method === 'POST')
     return JSON.stringify(req.body)
@@ -25,13 +25,14 @@ morgan.token('my_post', function (req, res) {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :my_post'))
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+const errorHandler = (error, _request, response, next) => {
+  //console.error(error.data)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
+    console.log('will do')
+    return response.status(400).send(error.message )
   }
 
   next(error)
@@ -39,11 +40,11 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler)
 
-app.get('/api', (req, res) => {
+app.get('/api', (_req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/persons', (req, res, next) => {
+app.get('/api/persons', (_req, res, next) => {
   Person
     .find({})
     .then(persons => { res.json(persons.map(person => person.toJSON())) })
@@ -121,12 +122,13 @@ app.post('/api/persons', (req, res, next) => {
     number: body.number
   })
 
-  person.save().then(response => {
+  person.save().then(savedObj => {
+    console.log(savedObj)
     console.log(`Added ${person.name} number ${person.number} to phonebook`)
+    res.json(savedObj.toJSON()).end()
+  }).catch(error => {
+    res.status(400).send(error.message)
   })
-    .catch(error => next(error))
-
-  res.json(person)
 })
 
 const PORT = process.env.PORT
