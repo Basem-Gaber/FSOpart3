@@ -1,7 +1,7 @@
-POST /api/persons
+PUT /api/persons
 Content-Type: application/json
 
 {
-    "name": "Basem Gaber",
+    "name": "Ada Lovelace",
     "number": "0102306378"
 }

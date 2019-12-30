@@ -1,0 +1,8 @@
+PUT https://polar-basin-74504.herokuapp.com/api/persons/2
+
+Content-Type: application/json
+
+{
+    "name": "Ada Lovelace",
+    "number": "0102306378"
+}
