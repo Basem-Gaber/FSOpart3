@@ -1,6 +1,8 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable no-unused-vars */
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -48,20 +50,22 @@ app.get('/api/persons', (_req, res, next) => {
   Person
     .find({})
     .then(persons => { res.json(persons.map(person => person.toJSON())) })
-    .catch(error => next(error))
+    .catch(error => {
+      res.status(404).send(error.message)
+    })
 })
-/*
+
 app.get('/info', async function (req, res) {
   let count = 0
   Person.find({}, function (err, user) {
-    if (err) { throw err; }
+    if (err) { throw err }
     count++
   })
     .then(res.write(`Phone book has info for ${count} people\n`))
   res.write(new Date().toString())
   res.end()
 })
-*/
+
 app.get('/api/persons/:id', (req, res) => {
   Person.findById(req.params.id)
     .then(person => {
