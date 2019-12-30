@@ -1,1 +1,1 @@
-GET https://polar-basin-74504.herokuapp.com/api/persons
+GET http://localhost:3001/api/persons

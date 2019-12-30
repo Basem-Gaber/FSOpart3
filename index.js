@@ -50,9 +50,6 @@ app.get('/api/persons', (_req, res, next) => {
   Person
     .find({})
     .then(persons => { res.json(persons.map(person => person.toJSON())) })
-    .catch(error => {
-      res.status(404).send(error.message)
-    })
 })
 
 app.get('/info', async function (req, res) {
